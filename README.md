@@ -15,6 +15,7 @@ La finalidad del proyecto es educativa y de investigación, no comercial.
 
 ### Datos obtenidos
 Creación de un dataset en formato csv con los valores diarios del euribor desde 1999 hasta el día actual con fines educativos. Se obtienen las cotizaciones con un programa en python mediante técnicas de webscraping contra el portal inmobiliario www.idealista.com
+
 Idealista es uno de los portales inmobialiarios de referencia en el contexto estatal y probablemente uno de los mayores portales de compra venta en España.
 
 Incluir citas de estudios con datos de Idealista (TODO)
@@ -30,8 +31,10 @@ Enrique Javier Andrés Orera
 
 
 ### Ficheros del código fuente
-La extracción de datos se realiza mediante un script en código Python, escrito para funcionar con Python3 
-__euribordiario.py__
+La extracción de datos se realiza mediante un script en código Python, escrito para funcionar con Python3: 
+
+__euribordiario.py__  
+
 Este código fuente genera un DataFrame de salida que se almacena en un fichero csv y una gráfica en formato PNG que permite interpretar los datos
 El DataFrame generado tiene el siguiente formato:
 
@@ -41,18 +44,24 @@ El DataFrame generado tiene el siguiente formato:
 | 1       |  19990105     | 0.367  |
 
 Donde __Index__ es un valor entero auto incremental, empezando en cero
-__Dia__ es el dia en el que se ha registrado el valor, con el formato AAAAMMDD, donde las cuatro primeras cifras son el año, las dos siguientes el mes en formato numérico y las dos últimas el día
+
+__Dia__ es el dia en el que se ha registrado el valor, con el formato AAAAMMDD, donde las cuatro primeras cifras son el año, las dos siguientes el mes en formato numérico y las dos últimas el día del mes
+
 __Valor__ es el valor del índice del Euribor registrado ese día, en formato decimal
 
 
 ### Fichero CSV
 El DataFrame se almacena en un fichero csv, con el siguiente nombre:
- __euribordiario.csv__
+
+__euribordiario.csv__
+
 En el repositorio hay un fichero de ejemplo generado el 30 de octubre de 2020. 
 
 ### Fichero PNG
-El código de Python también genera una gráfica con la representación de la evolución diaria del índice, llamada:
- __euribordiario.png__
+El código de Python también genera una gráfica con la representación de la evolución diaria del índice, llamada:  
+
+__euribordiario.png__
+
 En el repositorio hay una gráfica de ejemplo generada el 30 de octubre de 2020.
 
 ### Otros ficheros
