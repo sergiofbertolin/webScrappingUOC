@@ -74,18 +74,56 @@ Práctica 1 de la asignatura Tipología y Ciclo de Vida de los Datos del Master 
 
 1. Contexto. Explicar en qué contexto se ha recolectado la información. Explique
 por qué el sitio web elegido proporciona dicha información.
+
+La finalidad del proyecto es educativa y de investigación, no comercial. Idealista, el sitio web "raspado", es uno de los portales inmobialiarios de referencia en el contexto estatal y probablemente uno de los mayores portales de compra venta en España. Esta web pone al alcance del usuario multitud de información inmobiliaria para hacer más fácil al usuario su experiencia en la compra-venta de inmuebles.
+
 2. Definir un título para el dataset. Elegir un título que sea descriptivo.
+
+Llamaremos al dataset "Euribor diario"
+
 3. Descripción del dataset. Desarrollar una descripción breve del conjunto de datos
 que se ha extraído (es necesario que esta descripción tenga sentido con el título
 elegido).
+
+Creación de un dataset con los valores diarios del índice del Euribor desde 1999 hasta el día actual con fines educativos. Se obtienen las cotizaciones con un programa en python mediante técnicas de webscraping contra el portal inmobiliario www.idealista.com
+
 4. Representación gráfica. Presentar una imagen o esquema que identifique el
 dataset visualmente
+
+__euribordiario.png__
+
 5. Contenido. Explicar los campos que incluye el dataset, el periodo de tiempo de
 los datos y cómo se ha recogido.
+
+El Dataset generado tiene el siguiente formato:
+
+| Index   |      Dia      |  Valor |
+|---------|:-------------:|-------:|
+| 0       |  19990104     | 0.345  |
+| 1       |  19990105     | 0.367  |
+
+Donde __Index__ es un valor entero auto incremental, empezando en cero
+
+__Dia__ es el dia en el que se ha registrado el valor, con el formato AAAAMMDD, donde las cuatro primeras cifras son el año, las dos siguientes el mes en formato numérico y las dos últimas el día del mes
+
+__Valor__ es el valor del índice del Euribor registrado ese día, en formato decimal
+
+El periodo de tiempo d erecogida es desde el 4 de enero de 1999 hasta el 30 de octubre de 2020 y se ha recogido mediante un raspado recurrente de las páginas de idalista con la información diaria y mensual del índice Euribor.
+
 6. Agradecimientos. Presentar al propietario del conjunto de datos. Es necesario
 incluir citas de investigación o análisis anteriores (si los hay).
+
+Idealista es uno de los portales inmobialiarios de referencia en el contexto estatal y probablemente uno de los mayores portales de compra venta en España.
+
+Incluir citas de estudios con datos de Idealista (TODO)
+
 7. Inspiración. Explique por qué es interesante este conjunto de datos y qué
 preguntas se pretenden responder.
+
+En el momento actual, dentro de la mayor pandemia del siglo, hay una incertidumbre creciente en todos los aspectos financieros, de los que no queda exento el mercado inmobiliario.
+
+Mediante esta recolección de datos se pretende obtener una herramienta que permita analizar la tendencia del principal índice inmobiliario en Europa, el Euribor, para poder realizar tanto análisis como predicciones.
+
 8. Licencia. Seleccione una de estas licencias para su dataset y explique el motivo
 de su selección:
 ○ Released Under CC0: Public Domain License
@@ -95,7 +133,10 @@ de su selección:
 under Database Contents License
 ○ Other (specified above)
 ○ Unknown License
+
 9. Código. Adjuntar el código con el que se ha generado el dataset, preferiblemente
 en Python o, alternativamente, en R.
+
+
 10. Dataset. Publicación del dataset en formato CSV en Zenodo (obtención del DOI)
 con una breve descripción.
