@@ -9,7 +9,12 @@ import requests as rq
 from bs4 import BeautifulSoup
 import pandas as pd
 import matplotlib.pyplot as plt
- 
+import locale
+import calendar
+
+# Necesario para calendar
+locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
+
 req = rq.get('https://www.idealista.com/news/euribor/historico-diario/')
 soup = BeautifulSoup(req.text,"lxml")
 
@@ -19,22 +24,8 @@ mes=''
 valor=''
 indice=''
 
-def switch_mes(argument):
-    switcher = {
-        'Enero': '01',
-    	'Febrero': '02',
-    	'Marzo': '03',
-    	'Abril': '04',
-    	'Mayo': '05',
-    	'Junio': '06',
-    	'Julio': '07',
-        'Agosto': '08',
-        'Septiembre': '09',
-        'Octubre': '10',
-        'Noviembre': '11',
-        'Diciembre': '12'
-    }
-    return switcher.get(argument, "Invalid month")
+# He quitado el método porque se puede hacer lo mismo utilizando el módulo calendar
+# que viene con python
 
 euribor={}
 
@@ -44,7 +35,9 @@ for sub_heading in soup.find_all('td'):
         anio=sub_heading.text
     elif i==2:            
         mes=sub_heading.text
-        indice=anio+switch_mes(mes)       
+        # obtenemos el número del mes apartir del nombre utilizando calendar
+        numeroMes= '{:02d}'.format(list(calendar.month_name).index(mes.lower()))
+        indice=anio+numeroMes       
     elif i==0: 
         valor=sub_heading.text
         euribor[indice]=(anio,mes,valor)
@@ -54,7 +47,7 @@ eur.to_csv('prueba.csv')
 
 #eur.plot(x='Index', y='Valor')
 
+# Perfecto, así sacamos el valor del euribor a fin de mes
 
-
-
-
+# Echale un vistazo a la implementación que he hecho para sacar el valor todos los días
+# euribordiario.py
