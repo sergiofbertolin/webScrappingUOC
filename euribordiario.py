@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+Script para extraer el euribor diario de la página web de Idealista
+Allí hay almacenados los datos del Euribor desde Enero de 1999 hasta 
+el mes anterior a la extracción
+"""
+
+# Importación de librerías necesarias
+
 import locale
 import datetime
 import random
@@ -8,7 +17,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
+# Necesario para calendar (configuración local a hora española)
 locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
 
 # Lista de user agents
@@ -104,17 +113,22 @@ while anyo >= 1999:
     anyo = anyo - 1
     mes = 12
 
-
+# Creamos un DataFrame para almacenar los pares de conjuntos días, valores
 euribordf = pd.DataFrame(list(zip(dias[::-1], valores[::-1])), columns=['Day', 'Value'])
+
+# Almacenamos los resultados de nuestro dataset en un csv
 euribordf.to_csv('euribordiario.csv')
 
+# Representamos gráficamente la evolución temporal del Euribor
 print(euribordf)
 
 f, ax = plt.subplots()
 ax.plot(euribordf.index, euribordf.Value)
-ax.set(xlabel='Date', ylabel='interest rate', title='Euribor')
+ax.set(xlabel='Fecha (AñoMesDia)', ylabel='tasa de interés del Euribor (%)', title='Evolución diaria del Euribor desde 1999')
 plt.xticks(np.arange(euribordf.shape[0])[::100], euribordf.Day[::100], rotation=90)
 
 plt.show()
+
+# Almacenamos la gráfica
 f.savefig("euribor.png")
 
