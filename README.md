@@ -60,7 +60,7 @@ En el repositorio hay un fichero de ejemplo generado el 30 de octubre de 2020.
 ### Fichero PNG
 El código de Python también genera una gráfica con la representación de la evolución diaria del índice, llamada:  
 
-__euribordiario.png__
+__euribor.png__
 
 En el repositorio hay una gráfica de ejemplo generada el 30 de octubre de 2020.
 
