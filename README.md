@@ -10,6 +10,9 @@ Creación de un dataset en formato csv con los valores del euribor desde 1999 co
 
 Se obtienen las cotizaciones con un programa en python mediante ténicas de webscraping del portal inmobiliario www.idealista.com
 
+La finalidad del proyecto es educativa y de investigación, no comercial.
+
+
 ## Miembros del equipo
 
 Sergio Fernández Bertolin
