@@ -1,4 +1,42 @@
 # webScrappingUOC
+
+## Práctica 1: Web scraping
+
+## Descripción
+Desarrollo de la práctica 1 de la asignatura Tipología y ciclo de vida de los datos del Máster Universitario en Ciencia de Datos de la Universitat Oberta de Catalunya.
+
+
+Creación de un dataset en formato csv con los valores del euribor desde 1999 con fines educativos.
+
+Se obtienen las cotizaciones con un programa en python mediante ténicas de webscraping del portal inmobiliario www.idealista.com
+
+## Miembros del equipo
+
+Sergio Fernández Bertolin
+
+Enrique Javier Andrés Orera
+
+
+
+## Descripción de los ficheros
+
+
+### Ficheros del código fuente
+
+nombre del fichero .py
+
+### Fichero CSV
+
+nombre del fichero csv
+
+### Otros ficheros
+
+pdf/Práctica 1.pdf: contiene el documento de respuestas (TO DO)
+
+la imagen que describe el dataset (TO DO)
+
+
+
 Práctica 1 de la asignatura Tipología y Ciclo de Vida de los Datos del Master de Ciencia de Datos de la UOC
 
 1. Contexto. Explicar en qué contexto se ha recolectado la información. Explique
