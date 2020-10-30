@@ -114,7 +114,7 @@ while anyo >= 1999:
     mes = 12
 
 # Creamos un DataFrame para almacenar los pares de conjuntos días, valores
-euribordf = pd.DataFrame(list(zip(dias[::-1], valores[::-1])), columns=['Day', 'Value'])
+euribordf = pd.DataFrame(list(zip(dias[::-1], valores[::-1])), columns=['Dia', 'Valor'])
 
 # Almacenamos los resultados de nuestro dataset en un csv
 euribordf.to_csv('euribordiario.csv')
@@ -123,9 +123,9 @@ euribordf.to_csv('euribordiario.csv')
 print(euribordf)
 
 f, ax = plt.subplots()
-ax.plot(euribordf.index, euribordf.Value)
+ax.plot(euribordf.index, euribordf.Valor)
 ax.set(xlabel='Fecha (AñoMesDia)', ylabel='tasa de interés del Euribor (%)', title='Evolución diaria del Euribor desde 1999')
-plt.xticks(np.arange(euribordf.shape[0])[::100], euribordf.Day[::100], rotation=90)
+plt.xticks(np.arange(euribordf.shape[0])[::100], euribordf.Dia[::100], rotation=90)
 
 plt.show()
 
