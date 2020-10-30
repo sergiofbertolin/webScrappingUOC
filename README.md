@@ -67,7 +67,7 @@ En el repositorio hay una gráfica de ejemplo generada el 30 de octubre de 2020.
 ### Otros ficheros
 PDF que contiene el documento de respuestas solicitado en la práctica_
 
-__pdf/Práctica 1.pdf__ 
+__PDF/Práctica 1.pdf__ 
 
 ## Licencia
 CC BY-NC-SA 4.0 License
