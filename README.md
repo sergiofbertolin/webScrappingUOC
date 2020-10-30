@@ -134,6 +134,18 @@ under Database Contents License
 ○ Other (specified above)
 ○ Unknown License
 
+Hemos escogido la licencia CC BY-NC-SA 4.0 License, porque creemos que recoge adecuadamente el espiritu de la creación del dataset. Un dataset creado para un uso educativo, no comercial.
+
+Está licencia tiene los siguientes términos:
+
+Atribución : debe otorgar el crédito correspondiente , proporcionar un enlace a la licencia e indicar si se realizaron cambios . Puede hacerlo de cualquier manera razonable, pero no de ninguna manera que sugiera que el licenciante lo respalda a usted o su uso.
+
+No comercial: no puede utilizar el material con fines comerciales .
+
+ShareAlike : si remezcla, transforma o construye sobre el material, debe distribuir sus contribuciones bajo la misma licencia que el original.
+
+Terminos extraídos de https://creativecommons.org/licenses/by-nc-sa/4.0/
+
 9. Código. Adjuntar el código con el que se ha generado el dataset, preferiblemente
 en Python o, alternativamente, en R.
 
