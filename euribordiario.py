@@ -6,6 +6,7 @@ import requests
 import calendar
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
@@ -45,12 +46,11 @@ anyo = int(now.strftime("%Y"))
 mes = int(now.strftime("%m"))
 dia = int(now.strftime("%d"))
 
-
 controlmesactual = True
 
-# Se crea una lista vacía donde volcaremos los datos
-datos = []
-
+# Creamos listas donde guardaremos los días y los valores
+dias= []
+valores =[]
 # Para cada año
 while anyo >= 1999:
     # Para cada mes
@@ -90,22 +90,31 @@ while anyo >= 1999:
                 # fecha
                 fecha = "%d%s%s" % (anyo, '{:02d}'.format(mes), '{:02d}'.format(int(dato.string)))
                 # Añadimos la fecha a la lista
-                datos.append(fecha)
+                dias.append(fecha)
                 print(fecha)
             else:
                 # euribor
+                euribor = dato.string[:-1].replace(",", ".")
                 # Añadimos el euribor a la lista
-                datos.append(dato.string)
-                print(dato.string)
+                valores.append(float(euribor))
+                print(float(euribor))
 
         mes = mes - 1
 
     anyo = anyo - 1
     mes = 12
 
-datosnp = np.reshape(datos, (int(len(datos) / len(tablehead)), len(tablehead)))
 
-datosdf = pd.DataFrame(datosnp, columns=tablehead)
+euribordf = pd.DataFrame(list(zip(dias[::-1], valores[::-1])), columns=['Day', 'Value'])
+euribordf.to_csv('euribordiario.csv')
 
-print(datosdf)
+print(euribordf)
+
+f, ax = plt.subplots()
+ax.plot(euribordf.index, euribordf.Value)
+ax.set(xlabel='Date', ylabel='interest rate', title='Euribor')
+plt.xticks(np.arange(euribordf.shape[0])[::100], euribordf.Day[::100], rotation=90)
+
+plt.show()
+f.savefig("euribor.png")
 
