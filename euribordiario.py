@@ -16,6 +16,8 @@ import calendar
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import random
+import time
 
 # Necesario para calendar (configuración local a hora española)
 locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
@@ -78,6 +80,10 @@ while anyo >= 1999:
 
         # Actualizamos cabeceras con el User-Agent aleatorio
         headers.update({'User-Agent': userAgent})
+        
+        # Espaciado entre peticiones (2 ó 3 segundos)
+        sleep_secs = randrange(2,3)
+        time.sleep(sleep_secs)
 
         # Descargamos el sitio web de interés
         html = requests.get(url, headers=headers)
@@ -125,7 +131,7 @@ print(euribordf)
 f, ax = plt.subplots()
 ax.plot(euribordf.index, euribordf.Valor)
 ax.set(xlabel='Fecha (AñoMesDia)', ylabel='tasa de interés del Euribor (%)', title='Evolución diaria del Euribor desde 1999')
-plt.xticks(np.arange(euribordf.shape[0])[::100], euribordf.Dia[::100], rotation=90)
+plt.xticks(np.arange(euribordf.shape[0])[::150], euribordf.Dia[::150], rotation=90)
 
 plt.show()
 
