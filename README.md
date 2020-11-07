@@ -18,13 +18,22 @@ Creación de un dataset en formato csv con los valores diarios del euribor desde
 
 Idealista es uno de los portales inmobiliarios de referencia en el contexto estatal y probablemente uno de los mayores portales de compra venta en España.
 
-Incluir citas de estudios con datos de Idealista (TODO)
+
 
 ## Miembros del equipo
 
 Sergio Fernández Bertolin
 
 Enrique Javier Andrés Orera
+
+
+## Uso de técnicas avanzadas
+
+Uso de 'pool' de user agents
+
+Uso de retardos en las peticiones
+
+Uso de Selenium para poder acceder al contenido de las tablas que se generan de forma dinámica y que de otra forma serían inaccesibles
 
 
 ## Descripción de los ficheros
