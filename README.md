@@ -11,14 +11,16 @@ En el momento actual, dentro de la mayor pandemia del siglo, hay una incertidumb
 
 Mediante esta recolección de datos se pretende obtener una herramienta que permita analizar la tendencia del principal índice inmobiliario en Europa, el Euribor, para poder realizar tanto análisis como predicciones.
 
+Para completar estos anális y localizar interacciones y correlaciones hemos extraído también precios del suelo diariamente en las 4 provincias con mayor número de ventas del mercado nacional, así como el valor de cierre del IBEX35 al final de cada jornada.
+
 La finalidad del proyecto es educativa y de investigación, no comercial.
 
 ### Datos obtenidos
-Creación de un dataset en formato csv  con los valores diarios del índice del Euribor y   os precios de venta medios de la vivienda/m2  desde 2006 hasta el día actual y de las cotizaciones del Ibex35, con fines educativos. Se obtienen las cotizaciones con un programa en python mediante técnicas de webscraping contra el portal inmobiliario www.idealista.com y contra www.infobolsa.com
+Creación de un dataset en formato csv con los valores diarios del índice del Euribor y los precios de venta medios de la vivienda/m2 desde 2006 hasta el día actual y de las cotizaciones del Ibex35 desde 2016 hasta hoy, con fines educativos. Se obtienen las cotizaciones con un programa en Python mediante técnicas de webscraping contra el portal inmobiliario www.idealista.com y contra www.infobolsa.com
 
 Idealista es uno de los portales inmobiliarios de referencia en el contexto estatal y probablemente uno de los mayores portales de compra venta en España.
 
-Infobolsa.com es el portal de informción financiera de BME, Bolsas y Mercados Españoles.
+Infobolsa.com es el portal de información financiera de BME, Bolsas y Mercados Españoles.
 
 
 
@@ -72,7 +74,7 @@ __precio_m2_Sevilla__ es el precio de venta medio por metro cuadrado en la ciuda
 
 __precio_m2_Valencia__ es el precio de venta medio por metro cuadrado en la ciudad de Valencia
 
-__IBEX35__ es la cotización del indice Ibex 35
+__IBEX35__ es la cotización diaria al cierre del indice Ibex 35
 
 
 
@@ -81,14 +83,14 @@ El DataFrame se almacena en un fichero csv, con el siguiente nombre:
 
 __euribordiario.csv__
 
-En el repositorio hay un fichero de ejemplo generado el 30 de octubre de 2020. 
+En el repositorio hay un fichero de ejemplo generado el 9 de noviembre de 2020. 
 
 ### Fichero PNG
 El código de Python también genera una gráfica con la representación de la evolución diaria del índice, llamada:  
 
 __euribor.png__
 
-En el repositorio hay una gráfica de ejemplo generada el 30 de octubre de 2020.
+En el repositorio hay una gráfica de ejemplo generada el 9 de noviembre de 2020.
 
 ### Otros ficheros
 PDF que contiene el documento de respuestas solicitado en la práctica_
@@ -100,10 +102,10 @@ CC BY-NC-SA 4.0 License
 
 Está licencia tiene los siguientes términos:
 
-Atribución : debe otorgar el crédito correspondiente , proporcionar un enlace a la licencia e indicar si se realizaron cambios . Puede hacerlo de cualquier manera razonable, pero no de ninguna manera que sugiera que el licenciante lo respalda a usted o su uso.
+Atribución: debe otorgar el crédito correspondiente , proporcionar un enlace a la licencia e indicar si se realizaron cambios . Puede hacerlo de cualquier manera razonable, pero no de ninguna manera que sugiera que el licenciante lo respalda a usted o su uso.
 
 No comercial: no puede utilizar el material con fines comerciales .
 
-ShareAlike : si remezcla, transforma o construye sobre el material, debe distribuir sus contribuciones bajo la misma licencia que el original.
+ShareAlike: si remezcla, transforma o construye sobre el material, debe distribuir sus contribuciones bajo la misma licencia que el original.
 
-Terminos extraídos de https://creativecommons.org/licenses/by-nc-sa/4.0/
+Términos extraídos de https://creativecommons.org/licenses/by-nc-sa/4.0/
