@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Script para extraer el euribor diario de la página web de Idealista
-Allí hay almacenados los datos del Euribor desde Enero de 1999 hasta
-el mes anterior a la extracción
+desde Enero de 2006 hasta el momento actual, así como datos del precio
+de venta medio de la vivienda/m2
+Extracción de datos de la cotización de cierre del Ibex35 de
+www.infobolsa.com
 """
 
 # Importación de librerías necesarias
@@ -67,46 +69,45 @@ userAgents = [
 def get_euribor(dias, valores):
     # Fecha actual
     now = datetime.datetime.now()
-    
+
     anyo = int(now.strftime("%Y"))
-    # Defino año final 2005, que es hasta donde tengo datos de precios
-    anyo_final = 2005
+    # Defino año final 2006, que es hasta donde tengo datos de precios
+    anyo_final = 2006
     mes = int(now.strftime("%m"))
-    
-    
+
     controlmesactual = True
-    
-    
+
     # Para cada año
-    for i_anyo in range(anyo,anyo_final,-1):
+    for i_anyo in range(anyo, anyo_final-1, -1):
         # Para cada mes
-        for i_mes in range(mes,0,-1):
+        for i_mes in range(mes, 0, -1):
             if controlmesactual:
                 url = "https://www.idealista.com/news/euribor/mensual/mes-actual/"
                 controlmesactual = False
             else:
-                url = "https://www.idealista.com/news/euribor/mensual/%s-%d/" % (calendar.month_name[int(i_mes)], i_anyo)
-    
+                url = "https://www.idealista.com/news/euribor/mensual/%s-%d/" % (
+                calendar.month_name[int(i_mes)], i_anyo)
+
             # Seleccionamos user agent aleatoriamente
             userAgent = random.choice(userAgents)
-    
+
             # Cargamos cabeceras por defecto
             headers = requests.utils.default_headers()
-    
+
             # Actualizamos cabeceras con el User-Agent aleatorio
             headers.update({'User-Agent': userAgent})
-    
+
             # Espaciado entre peticiones (2 ó 3 segundos)
             sleep_secs = random.randrange(2, 4)
             time.sleep(sleep_secs)
-    
+
             # Descargamos el sitio web de interés
             html = requests.get(url, headers=headers)
-    
+
             soup = bsoup(html.content)
-    
+
             contador = 0
-    
+
             for dato in soup.body.tbody.find_all('td'):
                 contador = contador + 1
                 if contador % 2 == 1:
@@ -121,21 +122,20 @@ def get_euribor(dias, valores):
                     # Añadimos el euribor a la lista
                     valores.append(float(euribor))
                     print(float(euribor))
-        mes=12
-        i_mes = 12
+        mes = 12
+
     return euribor
 
 
 # Función para extraer el IBEX35 diario
 def precios_ibex(dict_ibex, anio):
-
     url_anio = "https://www.infobolsa.es/cotizacion/historico-ibex_35?startDate=%d0101&endDate=%d1231" % (anio, anio)
 
     # Opciones para el driver de Selenium
     options = webdriver.ChromeOptions()
 
     # Headless impide que el navegador Crhrome controlado por python se muestre en pantalla
-    # options.add_argument('headless')
+    options.add_argument('headless')
 
     # Ignoramos posibles errores
     options.add_argument('--ignore-certificate-errors')
@@ -195,7 +195,7 @@ def precios_ibex(dict_ibex, anio):
         if contador % 6 == 1:
             print(dato_tabla_ibex.string)
             a = dato_tabla_ibex.string
-            anyomes="%s%s%s" % (a[6:10], a[3:5], a[0:2])
+            anyomes = "%s%s%s" % (a[6:10], a[3:5], a[0:2])
         elif contador % 6 == 2:
             print(dato_tabla_ibex.string)
             b = dato_tabla_ibex.string
@@ -207,13 +207,11 @@ def precios_ibex(dict_ibex, anio):
             if anyomes in dias:
                 dict_ibex[anyomes] = indice
 
-
-
     # Cerramos driver
     web_driver.get('https://www.infobolsa.es/auth/bye')
     web_driver.close()
-    
-    return(dict_ibex)
+
+    return (dict_ibex)
 
 
 # Función para extraer los precios medios por m2 de una Ciudad.
@@ -235,7 +233,7 @@ def precios_ciudad(dias, ciudad):
     options = webdriver.ChromeOptions()
 
     # Headless impide que el navegador Crhrome controlado por python se muestre en pantalla
-    # options.add_argument('headless')
+    options.add_argument('headless')
 
     # Ignoramos posibles errores
     options.add_argument('--ignore-certificate-errors')
@@ -307,7 +305,7 @@ def precios_ciudad(dias, ciudad):
     precio_m2_2 = []
     for i in range(len(dias)):
         try:
-            precio_m2_2.append(diccionario[dias[i][0:6]])
+            precio_m2_2.append(np.int(diccionario[dias[i][0:6]]))
         except:
             precio_m2_2.append(np.NaN)
 
@@ -317,10 +315,7 @@ def precios_ciudad(dias, ciudad):
     return precio_m2_2
 
 
-
-
 get_euribor(dias, valores)
-
 
 start_period = 2020
 end_period = 2015
@@ -328,10 +323,10 @@ end_period = 2015
 # Inicializo un diccionario con NAs para todos los días
 dict_ibex = {}
 for i in range(len(dias)):
-    dict_ibex[dias[i]]=np.NaN
+    dict_ibex[dias[i]] = np.NaN
 
-for i in range(start_period,end_period,-1):
-    dict_ibex=precios_ibex(dict_ibex,i)
+for i in range(start_period, end_period, -1):
+    dict_ibex = precios_ibex(dict_ibex, i)
 
 ciudades = ['Barcelona', 'Bilbao', 'Madrid', 'Sevilla', 'Valencia']
 
@@ -354,37 +349,23 @@ euribor_df.to_csv('euribordiario.csv')
 # Representamos gráficamente la evolución temporal del Euribor
 print(euribor_df)
 
-f, ax = plt.subplots()
-ax.plot(euribor_df.index, euribor_df.Euribor)
-ax.set(xlabel='Fecha (AñoMesDia)', ylabel='tasa de interés del Euribor (%)',
-       title='Evolución diaria del Euribor desde 2006')
+f, ax1 = plt.subplots()
+ax1.plot(euribor_df.index, euribor_df.Euribor, color='blue', label='Euribor')
+ax1.set(xlabel='Fecha (AñoMesDia)', ylabel='tasa de interés del Euribor (%)',
+        title='Evolución del Euribor, precio del m2 de la vivienda e Índice IBEX35 ')
 plt.xticks(np.arange(euribor_df.shape[0])[::150], euribor_df.Dia[::150], rotation=90)
-
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+# un segundo eje que comparte el eje x
+ax2 = ax1.twinx()
+ax2.set_ylabel('precios m2 o cotizaciones IBEX35')
+ax2.plot(euribor_df.index, euribor_df.precio_m2_Barcelona, color='red', label='Barcelona')
+ax2.plot(euribor_df.index, euribor_df.precio_m2_Bilbao, color='green', label='Bilbao')
+ax2.plot(euribor_df.index, euribor_df.precio_m2_Madrid, color='yellow', label='Madrid')
+ax2.plot(euribor_df.index, euribor_df.precio_m2_Sevilla, color='orange', label='Sevilla')
+ax2.plot(euribor_df.index, euribor_df.precio_m2_Valencia, color='purple', label='Valencia')
+ax2.plot(euribor_df.index, euribor_df.IBEX35, color='olive', label='IBEX35')
+plt.legend(bbox_to_anchor=(1.05, 0.90), loc='upper left', borderaxespad=0.)
 plt.show()
 
 # Almacenamos la gráfica
 f.savefig("euribor.png")
-
-
-g, ax = plt.subplots()
-ax.plot(euribor_df.index, euribor_df.IBEX35)
-ax.set(xlabel='Fecha (AñoMesDia)', ylabel='Valor de cierre del IBEX35',
-       title='Evolución diaria del IBEX35 desde 2006')
-plt.xticks(np.arange(euribor_df.shape[0])[::150], euribor_df.Dia[::150], rotation=90)
-
-plt.show()
-
-# Almacenamos la gráfica
-g.savefig("IBEX35.png")
-
-
-h, ax = plt.subplots()
-ax.plot(euribor_df.index, euribor_df.precio_m2_Barcelona)
-ax.set(xlabel='Fecha (AñoMesDia)', ylabel='precios en Barcelona',
-       title='Evolución diaria de los precios en Barcelona desde 2006')
-plt.xticks(np.arange(euribor_df.shape[0])[::150], euribor_df.Dia[::150], rotation=90)
-
-plt.show()
-
-# Almacenamos la gráfica
-h.savefig("PreciosBarcelona.png")
