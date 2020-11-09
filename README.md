@@ -14,9 +14,11 @@ Mediante esta recolección de datos se pretende obtener una herramienta que perm
 La finalidad del proyecto es educativa y de investigación, no comercial.
 
 ### Datos obtenidos
-Creación de un dataset en formato csv con los valores diarios del euribor desde 1999 hasta el día actual con fines educativos. Se obtienen las cotizaciones con un programa en python mediante técnicas de webscraping contra el portal inmobiliario www.idealista.com
+Creación de un dataset en formato csv  con los valores diarios del índice del Euribor y   os precios de venta medios de la vivienda/m2  desde 2006 hasta el día actual y de las cotizaciones del Ibex35, con fines educativos. Se obtienen las cotizaciones con un programa en python mediante técnicas de webscraping contra el portal inmobiliario www.idealista.com y contra www.infobolsa.com
 
 Idealista es uno de los portales inmobiliarios de referencia en el contexto estatal y probablemente uno de los mayores portales de compra venta en España.
+
+Infobolsa.com es el portal de informción financiera de BME, Bolsas y Mercados Españoles.
 
 
 
