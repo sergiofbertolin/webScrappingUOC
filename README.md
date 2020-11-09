@@ -47,16 +47,16 @@ __euribordiario.py__
 Este código fuente genera un DataFrame de salida que se almacena en un fichero csv y una gráfica en formato PNG que permite interpretar los datos
 El DataFrame generado tiene el siguiente formato:
 
-| Index   |      Dia      |  Valor | Euribor |
-|---------|:-------------:|-------:|--------:|
-| 0       |  19990104     | 0.345  |
-| 1       |  19990105     | 0.367  |
+| Index   |      Dia      | Euribor | precio_m2_Barcelona | precio_m2_Bilbao | precio_m2_Madrid | precio_m2_Sevilla | precio_m2_Valencia | IBEX35
+|---------|:-------------:|--------:|--------------------:|-----------------:|-----------------:|------------------:|-------------------:|---------:|
+| 2473    | 20160104      | 0.058   | 3313                | 2814             | 2743             | 1778              | 1342               | 9313.200 |
+| 2474    | 20160105      | 0.059   | 3313                | 2814             | 2743             | 1778              | 1342               | 9335.200 |
 
 Donde __Index__ es un valor entero auto incremental, empezando en cero
 
 __Dia__ es el dia en el que se ha registrado el valor, con el formato AAAAMMDD, donde las cuatro primeras cifras son el año, las dos siguientes el mes en formato numérico y las dos últimas el día del mes
 
-__Valor__ es el valor del índice del Euribor registrado ese día, en formato decimal
+__Euribor__ es el valor del índice del Euribor registrado ese día, en formato decimal
 
 
 ### Fichero CSV
