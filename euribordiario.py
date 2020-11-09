@@ -23,6 +23,17 @@ from selenium import webdriver
 # Necesario para calendar (configuración local a hora española)
 locale.setlocale(locale.LC_ALL, 'es_ES.utf8')
 
+# Creamos listas donde guardaremos los días y los valores
+dias = []
+valores = []
+
+# Inicializaciones para interfaz con datos IBEX35
+username_input = '//*[@id="login"]/ul[1]/li[1]/input'
+password_input = '//*[@id="login"]/ul[1]/li[2]/input'
+remember_input = '//*[@id="login"]/ul[1]/li[3]/input'
+login_submit = '//*[@id="login"]/ul[1]/li[2]/a'
+logout = '//*[@id="ifb-menu"]/div/ul/li[2]/a[2]'
+
 # Lista de user agents
 userAgents = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36',
@@ -50,67 +61,159 @@ userAgents = [
     'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)'
 ]
 
-# Fecha actual
-now = datetime.datetime.now()
 
-anyo = int(now.strftime("%Y"))
-mes = int(now.strftime("%m"))
+# Función para extraer el euribor diario
 
-
-controlmesactual = True
-
-# Creamos listas donde guardaremos los días y los valores
-dias = []
-valores = []
-# Para cada año
-while anyo >= 1999:
-    # Para cada mes
-    while mes > 0:
-        if controlmesactual:
-            url = "https://www.idealista.com/news/euribor/mensual/mes-actual/"
-            controlmesactual = False
-        else:
-            url = "https://www.idealista.com/news/euribor/mensual/%s-%d/" % (calendar.month_name[int(mes)], anyo)
-
-        # Seleccionamos user agent aleatoriamente
-        userAgent = random.choice(userAgents)
-
-        # Cargamos cabeceras por defecto
-        headers = requests.utils.default_headers()
-
-        # Actualizamos cabeceras con el User-Agent aleatorio
-        headers.update({'User-Agent': userAgent})
-
-        # Espaciado entre peticiones (2 ó 3 segundos)
-        sleep_secs = random.randrange(2, 4)
-        time.sleep(sleep_secs)
-
-        # Descargamos el sitio web de interés
-        html = requests.get(url, headers=headers)
-
-        soup = bsoup(html.content)
-
-        contador = 0
-
-        for dato in soup.body.tbody.find_all('td'):
-            contador = contador + 1
-            if contador % 2 == 1:
-                # fecha
-                fecha = "%d%s%s" % (anyo, '{:02d}'.format(mes), '{:02d}'.format(int(dato.string)))
-                # Añadimos la fecha a la lista
-                dias.append(fecha)
-                print(fecha)
+def get_euribor(dias, valores):
+    # Fecha actual
+    now = datetime.datetime.now()
+    
+    anyo = int(now.strftime("%Y"))
+    # Defino año final 2005, que es hasta donde tengo datos de precios
+    anyo_final = 2005
+    mes = int(now.strftime("%m"))
+    
+    
+    controlmesactual = True
+    
+    
+    # Para cada año
+    for i_anyo in range(anyo,anyo_final,-1):
+        # Para cada mes
+        for i_mes in range(mes,0,-1):
+            if controlmesactual:
+                url = "https://www.idealista.com/news/euribor/mensual/mes-actual/"
+                controlmesactual = False
             else:
-                # euribor
-                euribor = dato.string[:-1].replace(",", ".")
-                # Añadimos el euribor a la lista
-                valores.append(float(euribor))
-                print(float(euribor))
+                url = "https://www.idealista.com/news/euribor/mensual/%s-%d/" % (calendar.month_name[int(i_mes)], i_anyo)
+    
+            # Seleccionamos user agent aleatoriamente
+            userAgent = random.choice(userAgents)
+    
+            # Cargamos cabeceras por defecto
+            headers = requests.utils.default_headers()
+    
+            # Actualizamos cabeceras con el User-Agent aleatorio
+            headers.update({'User-Agent': userAgent})
+    
+            # Espaciado entre peticiones (2 ó 3 segundos)
+            sleep_secs = random.randrange(2, 4)
+            time.sleep(sleep_secs)
+    
+            # Descargamos el sitio web de interés
+            html = requests.get(url, headers=headers)
+    
+            soup = bsoup(html.content)
+    
+            contador = 0
+    
+            for dato in soup.body.tbody.find_all('td'):
+                contador = contador + 1
+                if contador % 2 == 1:
+                    # fecha
+                    fecha = "%d%s%s" % (i_anyo, '{:02d}'.format(i_mes), '{:02d}'.format(int(dato.string)))
+                    # Añadimos la fecha a la lista
+                    dias.append(fecha)
+                    print(fecha)
+                else:
+                    # euribor
+                    euribor = dato.string[:-1].replace(",", ".")
+                    # Añadimos el euribor a la lista
+                    valores.append(float(euribor))
+                    print(float(euribor))
+        mes=12
+        i_mes = 12
+    return euribor
 
-        mes = mes - 1
 
-    anyo = anyo - 1
-    mes = 12
+# Función para extraer el IBEX35 diario
+def precios_ibex(dict_ibex, anio):
+
+    url_anio = "https://www.infobolsa.es/cotizacion/historico-ibex_35?startDate=%d0101&endDate=%d1231" % (anio, anio)
+
+    # Opciones para el driver de Selenium
+    options = webdriver.ChromeOptions()
+
+    # Headless impide que el navegador Crhrome controlado por python se muestre en pantalla
+    # options.add_argument('headless')
+
+    # Ignoramos posibles errores
+    options.add_argument('--ignore-certificate-errors')
+    options.add_argument('--ignore-ssl-errors')
+
+    # Elegimos el user-agent del pool de user-agents userAgents
+    options.add_argument('user-agent=%s' % (random.choice(userAgents)))
+
+    # Creamos objeto webdriver (selenium), que es el que realiza la petición con las opciones anteriormente establecidas
+    try:
+        web_driver = webdriver.Chrome(options=options)
+    except:
+        # Si no podemos crear el objeto webdriver es porque no tenemos el driver Chrome.
+        # Lo descargamos y descomprimimos.
+        print("Descargamos y descomprimimos driver Chrome")
+        driver = requests.get('http://chromedriver.storage.googleapis.com/86.0.4240.22/chromedriver_win32.zip')
+
+        with open('chrome_driver.zip', 'wb') as d:
+            d.write(driver.content)
+
+        with ZipFile('chrome_driver.zip', 'r') as zfile:
+            try:
+                zfile.extractall()
+            except:
+                print("Something else went wrong")
+        # Una vez descargado y descomprimido el driver Chrome, creamos objeto webdriver (selenium), que es el que
+        # realiza la petición con las opciones anteriormente establecidas.
+        web_driver = webdriver.Chrome(options=options)
+
+    # Espaciado entre peticiones (de 10 a 15 segundos)
+    sleep_secs = random.randrange(10, 15)
+    time.sleep(sleep_secs)
+
+    # Tiempo de espera del driver para asegurarse de que carga la página en su totalidad, 5 segundos
+    seconds = 5
+    web_driver.implicitly_wait(seconds)
+    # Se abre una nueva petición a la página deseada
+    web_driver.get('https://www.infobolsa.es/account/login')
+    web_driver.find_element_by_xpath(username_input).send_keys('sergiofbertolin@gmail.com')
+    web_driver.find_element_by_xpath(password_input).send_keys('7y.zRt47ywsi')
+    web_driver.find_element_by_xpath(remember_input).click()
+    web_driver.find_element_by_xpath(login_submit).click()
+    web_driver.get(url_anio)
+
+    # Cambiamos al marco
+    web_driver.switch_to.frame
+    # Obtenemos el marco
+    web_driver.page_source
+
+    soup_tabla_ibex = bsoup(web_driver.page_source, "lxml")
+
+    anyomes = []
+    ibex35 = []
+    contador = 0
+    for dato_tabla_ibex in soup_tabla_ibex.body.tbody.find_all('td'):
+        contador += 1
+        if contador % 6 == 1:
+            print(dato_tabla_ibex.string)
+            a = dato_tabla_ibex.string
+            anyomes="%s%s%s" % (a[6:10], a[3:5], a[0:2])
+        elif contador % 6 == 2:
+            print(dato_tabla_ibex.string)
+            b = dato_tabla_ibex.string
+            indice = b.replace(".", "")
+            indice = indice.replace(",", ".")
+            ibex35.append(indice)
+        elif contador % 6 == 0:
+            contador = 0
+            if anyomes in dias:
+                dict_ibex[anyomes] = indice
+
+
+
+    # Cerramos driver
+    web_driver.get('https://www.infobolsa.es/auth/bye')
+    web_driver.close()
+    
+    return(dict_ibex)
 
 
 # Función para extraer los precios medios por m2 de una Ciudad.
@@ -214,16 +317,33 @@ def precios_ciudad(dias, ciudad):
     return precio_m2_2
 
 
+
+
+get_euribor(dias, valores)
+
+
+start_period = 2020
+end_period = 2015
+
+# Inicializo un diccionario con NAs para todos los días
+dict_ibex = {}
+for i in range(len(dias)):
+    dict_ibex[dias[i]]=np.NaN
+
+for i in range(start_period,end_period,-1):
+    dict_ibex=precios_ibex(dict_ibex,i)
+
 ciudades = ['Barcelona', 'Bilbao', 'Madrid', 'Sevilla', 'Valencia']
 
 # Creamos diccionario de listas con las listas días, valores, precios_m2_Barcelona, precios_m2_Bilbao,
 # precios_m2_Madrid, precios_m2_Sevilla, precios_m2_Valencia
-euribor_dict = {'Dia': dias[::-1], 'Valor': valores[::-1],
+euribor_dict = {'Dia': dias[::-1], 'Euribor': valores[::-1],
                 'precio_m2_' + ciudades[0]: precios_ciudad(dias, ciudades[0])[::-1],
                 'precio_m2_' + ciudades[1]: precios_ciudad(dias, ciudades[1])[::-1],
                 'precio_m2_' + ciudades[2]: precios_ciudad(dias, ciudades[2])[::-1],
                 'precio_m2_' + ciudades[3]: precios_ciudad(dias, ciudades[3])[::-1],
-                'precio_m2_' + ciudades[4]: precios_ciudad(dias, ciudades[4])[::-1]}
+                'precio_m2_' + ciudades[4]: precios_ciudad(dias, ciudades[4])[::-1],
+                'IBEX35': list(dict_ibex.values())[::-1]}
 
 # Creamos un DataFrame para almacenar el diccionario de listas
 euribor_df = pd.DataFrame(euribor_dict)
@@ -235,9 +355,9 @@ euribor_df.to_csv('euribordiario.csv')
 print(euribor_df)
 
 f, ax = plt.subplots()
-ax.plot(euribor_df.index, euribor_df.Valor)
+ax.plot(euribor_df.index, euribor_df.Euribor)
 ax.set(xlabel='Fecha (AñoMesDia)', ylabel='tasa de interés del Euribor (%)',
-       title='Evolución diaria del Euribor desde 1999')
+       title='Evolución diaria del Euribor desde 2006')
 plt.xticks(np.arange(euribor_df.shape[0])[::150], euribor_df.Dia[::150], rotation=90)
 
 plt.show()
@@ -245,3 +365,26 @@ plt.show()
 # Almacenamos la gráfica
 f.savefig("euribor.png")
 
+
+g, ax = plt.subplots()
+ax.plot(euribor_df.index, euribor_df.IBEX35)
+ax.set(xlabel='Fecha (AñoMesDia)', ylabel='Valor de cierre del IBEX35',
+       title='Evolución diaria del IBEX35 desde 2006')
+plt.xticks(np.arange(euribor_df.shape[0])[::150], euribor_df.Dia[::150], rotation=90)
+
+plt.show()
+
+# Almacenamos la gráfica
+g.savefig("IBEX35.png")
+
+
+h, ax = plt.subplots()
+ax.plot(euribor_df.index, euribor_df.precio_m2_Barcelona)
+ax.set(xlabel='Fecha (AñoMesDia)', ylabel='precios en Barcelona',
+       title='Evolución diaria de los precios en Barcelona desde 2006')
+plt.xticks(np.arange(euribor_df.shape[0])[::150], euribor_df.Dia[::150], rotation=90)
+
+plt.show()
+
+# Almacenamos la gráfica
+h.savefig("PreciosBarcelona.png")
