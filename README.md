@@ -47,8 +47,8 @@ __euribordiario.py__
 Este código fuente genera un DataFrame de salida que se almacena en un fichero csv y una gráfica en formato PNG que permite interpretar los datos
 El DataFrame generado tiene el siguiente formato:
 
-| Index   |      Dia      |  Valor |
-|---------|:-------------:|-------:|
+| Index   |      Dia      |  Valor | Euribor |
+|---------|:-------------:|-------:|--------:|
 | 0       |  19990104     | 0.345  |
 | 1       |  19990105     | 0.367  |
 
