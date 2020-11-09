@@ -60,13 +60,13 @@ __Euribor__ es el valor del índice del Euribor registrado ese día, en formato 
 
 __precio_m2_Barcelona__ es el precio medio de venta por metro cuadrado en la ciudad de Barcelona
 
-__precio_m2_Bilbao__ es el precio medio de venta por metro cuadrado en la ciudad de Barcelona
+__precio_m2_Bilbao__ es el precio medio de venta por metro cuadrado en la ciudad de Bilbao
 
-__precio_m2_Madrid__ es el precio medio de venta por metro cuadrado en la ciudad de Barcelona
+__precio_m2_Madrid__ es el precio medio de venta por metro cuadrado en la ciudad de Madrid
 
-__precio_m2_Sevilla__ es el precio medio de venta por metro cuadrado en la ciudad de Barcelona
+__precio_m2_Sevilla__ es el precio medio de venta por metro cuadrado en la ciudad de Sevilla
 
-__precio_m2_Valencia__ es el precio medio de venta por metro cuadrado en la ciudad de Barcelona
+__precio_m2_Valencia__ es el precio medio de venta por metro cuadrado en la ciudad de Valencia
 
 __IBEX35__ es la cotización del indice Ibex 35
 
