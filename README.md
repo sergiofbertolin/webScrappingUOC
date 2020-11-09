@@ -35,6 +35,8 @@ Uso de retardos en las peticiones
 
 Uso de Selenium para poder acceder al contenido de las tablas que se generan de forma dinámica y que de otra forma serían inaccesibles
 
+Se gestionan usuarios y contraseñas
+
 
 ## Descripción de los ficheros
 
